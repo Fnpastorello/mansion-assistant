@@ -64,25 +64,12 @@ select{
     color:#7CFC00;
 }
 
-.clue{
+.investigation{
     color:#FFD700;
 }
 
 .blank{
     color:#777;
-}
-
-#historico{
-    max-width:600px;
-    margin:20px auto;
-    text-align:left;
-}
-
-.itemHistorico{
-    background:#222;
-    border-radius:8px;
-    padding:10px;
-    margin-bottom:10px;
 }
 
 </style>
@@ -123,14 +110,6 @@ Limpar
 
 <div id="resumo"></div>
 
-<hr style="margin:30px 0;">
-
-<h2>Últimas Rolagens</h2>
-
-<div id="historico">
-Nenhuma rolagem realizada.
-</div>
-
 <script>
 
 const faces = [
@@ -143,8 +122,6 @@ const faces = [
     "blank",
     "blank"
 ];
-
-let historico = [];
 
 function simbolo(face){
 
@@ -169,30 +146,11 @@ function classe(face){
             return "success";
 
         case "investigation":
-            return "clue";
+            return "investigation";
 
         default:
             return "blank";
     }
-}
-
-function atualizarHistorico(){
-
-    const div =
-        document.getElementById("historico");
-
-    if(historico.length === 0){
-
-        div.innerHTML =
-            "Nenhuma rolagem realizada.";
-
-        return;
-    }
-
-    div.innerHTML =
-        historico.map(item =>
-            `<div class="itemHistorico">${item}</div>`
-        ).join("");
 }
 
 function rolar(){
@@ -207,7 +165,6 @@ function rolar(){
     let falhas = 0;
 
     let html = "";
-    let textoHistorico = [];
 
     for(let i=0;i<quantidade;i++){
 
@@ -217,10 +174,6 @@ function rolar(){
                     Math.random()*faces.length
                 )
             ];
-
-        textoHistorico.push(
-            simbolo(resultado)
-        );
 
         if(resultado === "success")
             sucessos++;
@@ -251,44 +204,15 @@ function rolar(){
 
         ○ Em branco: ${falhas}<br><br>
 
-        Total: ${quantidade}
+        Total de dados: ${quantidade}
         `;
-
-    const agora =
-        new Date().toLocaleTimeString();
-
-    historico.unshift(
-        `
-        <strong>${agora}</strong><br>
-        ${textoHistorico.join(" ")}<br>
-        ✓ ${sucessos}
-        |
-        🔍 ${investigacoes}
-        |
-        ○ ${falhas}
-        `
-    );
-
-    if(historico.length > 5){
-        historico.pop();
-    }
-
-    atualizarHistorico();
 }
 
 function limpar(){
 
-    document.getElementById(
-        "resultado"
-    ).innerHTML = "";
+    document.getElementById("resultado").innerHTML = "";
 
-    document.getElementById(
-        "resumo"
-    ).innerHTML = "";
-
-    historico = [];
-
-    atualizarHistorico();
+    document.getElementById("resumo").innerHTML = "";
 }
 
 </script>
