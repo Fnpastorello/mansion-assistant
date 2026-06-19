@@ -34,14 +34,41 @@ button:hover{
     background:#9c1515;
 }
 
+select{
+    font-size:18px;
+    padding:5px;
+}
+
 #resultado{
     margin-top:20px;
-    font-size:40px;
+    font-size:42px;
 }
 
 #resumo{
-    margin-top:15px;
+    margin-top:20px;
     font-size:20px;
+    line-height:1.8;
+}
+
+.face{
+    display:inline-block;
+    margin:8px;
+    padding:10px;
+    min-width:50px;
+    border-radius:8px;
+    background:#222;
+}
+
+.success{
+    color:#7CFC00;
+}
+
+.clue{
+    color:#FFD700;
+}
+
+.blank{
+    color:#777;
 }
 
 </style>
@@ -51,7 +78,9 @@ button:hover{
 
 <h1>Mansions Assistant</h1>
 
-<h2>Rolador de Dados</h2>
+<h2>Rolador de Dados Oficial</h2>
+
+<p>Dado d8 de Mansions of Madness 2ª Edição</p>
 
 <select id="dados">
 <option>1</option>
@@ -79,51 +108,98 @@ Rolar Dados
 <script>
 
 const faces = [
-"✓",
-"✓",
-"🔍",
-"🔍",
-"★",
-"✖"
+    "success",
+    "success",
+    "success",
+    "investigation",
+    "investigation",
+    "blank",
+    "blank",
+    "blank"
 ];
+
+function simbolo(face){
+
+    switch(face){
+
+        case "success":
+            return "✓";
+
+        case "investigation":
+            return "🔍";
+
+        default:
+            return "○";
+    }
+}
+
+function classe(face){
+
+    switch(face){
+
+        case "success":
+            return "success";
+
+        case "investigation":
+            return "clue";
+
+        default:
+            return "blank";
+    }
+}
 
 function rolar(){
 
-    let quantidade =
+    const quantidade =
         parseInt(
             document.getElementById("dados").value
         );
 
     let sucessos = 0;
-    let pistas = 0;
-    let estrelas = 0;
+    let investigacoes = 0;
+    let falhas = 0;
 
-    let resultados = [];
+    let html = "";
 
     for(let i=0;i<quantidade;i++){
 
-        let face =
+        const resultado =
             faces[
                 Math.floor(
                     Math.random()*faces.length
                 )
             ];
 
-        resultados.push(face);
+        if(resultado === "success")
+            sucessos++;
 
-        if(face==="✓") sucessos++;
-        if(face==="🔍") pistas++;
-        if(face==="★") estrelas++;
+        else if(resultado === "investigation")
+            investigacoes++;
+
+        else
+            falhas++;
+
+        html += `
+            <span class="face ${classe(resultado)}">
+                ${simbolo(resultado)}
+            </span>
+        `;
     }
 
     document.getElementById("resultado").innerHTML =
-        resultados.join(" ");
+        html;
 
     document.getElementById("resumo").innerHTML =
         `
-        Sucessos: ${sucessos}<br>
-        Pistas: ${pistas}<br>
-        Estrelas: ${estrelas}
+        <strong>Resultados</strong><br><br>
+
+        ✓ Sucessos: ${sucessos}<br>
+
+        🔍 Investigações: ${investigacoes}<br>
+
+        ○ Em branco: ${falhas}<br><br>
+
+        Total: ${quantidade}
         `;
 }
 
