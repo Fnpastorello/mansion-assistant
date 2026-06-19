@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mansions Assistant</title>
+
+<style>
+
+body{
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
+    text-align:center;
+    padding:30px;
+}
+
+h1{
+    color:#d4b06a;
+}
+
+button{
+    background:#7a0e0e;
+    color:white;
+    border:none;
+    padding:12px 24px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#9c1515;
+}
+
+#resultado{
+    margin-top:20px;
+    font-size:40px;
+}
+
+#resumo{
+    margin-top:15px;
+    font-size:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Mansions Assistant</h1>
+
+<h2>Rolador de Dados</h2>
+
+<select id="dados">
+<option>1</option>
+<option>2</option>
+<option selected>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+
+<br><br>
+
+<button onclick="rolar()">
+Rolar Dados
+</button>
+
+<div id="resultado"></div>
+
+<div id="resumo"></div>
+
+<script>
+
+const faces = [
+"✓",
+"✓",
+"🔍",
+"🔍",
+"★",
+"✖"
+];
+
+function rolar(){
+
+    let quantidade =
+        parseInt(
+            document.getElementById("dados").value
+        );
+
+    let sucessos = 0;
+    let pistas = 0;
+    let estrelas = 0;
+
+    let resultados = [];
+
+    for(let i=0;i<quantidade;i++){
+
+        let face =
+            faces[
+                Math.floor(
+                    Math.random()*faces.length
+                )
+            ];
+
+        resultados.push(face);
+
+        if(face==="✓") sucessos++;
+        if(face==="🔍") pistas++;
+        if(face==="★") estrelas++;
+    }
+
+    document.getElementById("resultado").innerHTML =
+        resultados.join(" ");
+
+    document.getElementById("resumo").innerHTML =
+        `
+        Sucessos: ${sucessos}<br>
+        Pistas: ${pistas}<br>
+        Estrelas: ${estrelas}
+        `;
+}
+
+</script>
+
+</body>
+</html>
